@@ -1,25 +1,38 @@
 import React from "react";
 import Navbar from "../components/Navbar";
-import "./Contact.css";
+import "./Chatbot.css";
 
-const Contact = () => {
+const Chatbot = () => {
   return (
-    <div className="contact-container">
+    <div className="chatbot-container">
       <Navbar />
-      <div className="contact-content">
-        <h1>Contact Us</h1>
-        <p>
-          Have questions or need support? Reach out to us using the form below.
-        </p>
-        <form className="contact-form">
-          <input type="text" placeholder="Your Name" required />
-          <input type="email" placeholder="Your Email" required />
-          <textarea placeholder="Your Message" rows="5" required></textarea>
-          <button type="submit">Send Message</button>
-        </form>
+      {/* Particle Elements for Background Animation */}
+      <div className="particles">
+        <div className="particle"></div>
+        <div className="particle"></div>
+        <div className="particle"></div>
+        <div className="particle"></div>
+        <div className="particle"></div>
+        <div className="particle"></div>
+        <div className="particle"></div>
+        <div className="particle"></div>
+        <div className="particle"></div>
+        <div className="particle"></div>
+      </div>
+      <div className="chatbot-content">
+        <h1>Chat with MindEase</h1>
+        <p>Start a conversation with our AI-powered mental health companion.</p>
+        <div className="chat-window">
+          <p>AI: Hello! How can I assist you today?</p>
+          {/* Add chat functionality here */}
+        </div>
+        <div className="chat-input">
+          <input type="text" placeholder="Type your message..." />
+          <button>Send</button>
+        </div>
       </div>
     </div>
   );
 };
 
-export default Contact;
+export default Chatbot;

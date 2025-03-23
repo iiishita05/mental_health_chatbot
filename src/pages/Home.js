@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar.js";
+import Navbar from "../components/Navbar";
 import "./Home.css";
 
 const Home = () => {
@@ -18,6 +18,19 @@ const Home = () => {
   return (
     <div className={`home-container ${fadeIn ? "fade-in" : ""}`}>
       <Navbar />
+      {/* Particle Elements for Background Animation */}
+      <div className="particles">
+        <div className="particle"></div>
+        <div className="particle"></div>
+        <div className="particle"></div>
+        <div className="particle"></div>
+        <div className="particle"></div>
+        <div className="particle"></div>
+        <div className="particle"></div>
+        <div className="particle"></div>
+        <div className="particle"></div>
+        <div className="particle"></div>
+      </div>
       <div className="content">
         <h1>
           Welcome to <span>MindEase</span>

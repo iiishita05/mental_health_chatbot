@@ -16,29 +16,22 @@ const Navbar = () => {
       <div className={`nav-menu ${menuOpen ? "open" : ""}`}>
         <ul>
           <li>
-            <Link to="/about" onClick={() => setMenuOpen(false)}>
-              About Us
-            </Link>
+            <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
           </li>
           <li>
-            <Link to="/services" onClick={() => setMenuOpen(false)}>
-              Services
-            </Link>
+            <Link to="/about" onClick={() => setMenuOpen(false)}>About Us</Link>
           </li>
           <li>
-            <Link to="/faqs" onClick={() => setMenuOpen(false)}>
-              FAQs
-            </Link>
+            <Link to="/services" onClick={() => setMenuOpen(false)}>Services</Link>
           </li>
           <li>
-            <Link to="/contact" onClick={() => setMenuOpen(false)}>
-              Contact
-            </Link>
+            <Link to="/faqs" onClick={() => setMenuOpen(false)}>FAQs</Link>
           </li>
           <li>
-            <Link to="/login" onClick={() => setMenuOpen(false)}>
-              Login
-            </Link>
+            <Link to="/contact" onClick={() => setMenuOpen(false)}>Contact</Link>
+          </li>
+          <li>
+            <Link to="/login" onClick={() => setMenuOpen(false)}>Login</Link>
           </li>
         </ul>
       </div>

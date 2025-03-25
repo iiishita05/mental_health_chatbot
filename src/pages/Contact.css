@@ -3,10 +3,16 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    min-height: 100vh;
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
     color: white;
     text-align: center;
+    padding: 20px;
+}
+
+.contact-content {
+    width: 100%;
+    max-width: 600px;
 }
 
 .contact-content h1 {
@@ -24,35 +30,78 @@
     display: flex;
     flex-direction: column;
     gap: 15px;
-    max-width: 500px;
     width: 100%;
 }
 
 .contact-form input,
 .contact-form textarea {
-    padding: 10px;
+    padding: 12px;
     border: none;
     border-radius: 5px;
     background: #2a2a4e;
     color: white;
     font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(233, 30, 99, 0.3);
 }
 
 .contact-form textarea {
-    resize: none;
+    resize: vertical;
+    min-height: 120px;
 }
 
 .contact-form button {
     background-color: #e91e63;
     color: white;
     border: none;
-    padding: 10px;
+    padding: 12px;
     font-size: 1.1rem;
     border-radius: 25px;
     cursor: pointer;
     transition: background 0.3s;
+    margin-top: 10px;
 }
 
 .contact-form button:hover {
     background-color: #c2185b;
+}
+
+.confirmation-message {
+    color: #b0b0b0;
+    font-size: 1rem;
+    margin-top: 20px;
+}
+
+/* Particles animation (same as in your original) */
+.particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.particle {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    animation: float 15s infinite linear;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-1000px) rotate(720deg);
+        opacity: 0;
+    }
 }

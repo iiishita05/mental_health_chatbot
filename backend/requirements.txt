@@ -1,0 +1,22 @@
+Flask
+Flask-CORS
+Flask-MongoEngine
+python-dotenv
+google-auth
+google-auth-oauthlib
+requests
+transformers
+huggingface-hub
+torch
+torchvision
+torchaudio
+accelerate
+tqdm
+safetensors
+sentencepiece
+protobuf
+
+# Dependencies for google/gemma-3-1b-it
+transformers[torch]
+torch
+accelerate

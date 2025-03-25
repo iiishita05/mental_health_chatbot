@@ -37,7 +37,12 @@ const Login = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({name:name, email:email, password:password}),
     })
-    .then(response => response.json())
+.then(response => {
+  if (!response.ok) {
+    throw new Error("Signup failed");
+  }
+  return response.json();
+})
     .then((data) => {
       toast.success("Signed in")
       localStorage.setItem("User", JSON.stringify(data.user));

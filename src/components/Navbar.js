@@ -1,24 +1,15 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
-import BASE from "./../apis"
 import { toast } from "react-toastify";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   function Logout() {
-    localStorage.clear()
-    fetch(BASE+"/logout", {
-      method: "POST",
-      credentials: "include", 
-    })
-      .then(() => {
-        toast.success("Logged out");
-        setTimeout(() => window.location.href = "/" , 2000);
-      })
-      .catch((err) => toast.error("Error Logging out"));
-
+    localStorage.clear();
+    toast.success("Logged out");
+    setTimeout(() => window.location.href = "/" , 2000);
   }
 
   return (

@@ -16,7 +16,6 @@ const Login = () => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({email:email, password:password}),
-      credentials: "include"
     })
     .then(response => {
       if (response.ok) {
@@ -25,6 +24,7 @@ const Login = () => {
       return Promise.reject(response);
     })
     .then((data) => {
+      toast.success("Login successful");
       localStorage.setItem("User", data.user);
       localStorage.setItem("isLoggedIn", true);
       setTimeout(() => window.location.href = "/", 2000);
@@ -32,11 +32,10 @@ const Login = () => {
   }
 
   function signup(){
-    fetch(BASE+"/self-auth/signup", {
+    fetch(BASE+"/self-auth/signup", {                                  
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({name:name, email:email, password:password}),
-      credentials: "include"
     })
     .then(response => response.json())
     .then((data) => {

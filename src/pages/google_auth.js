@@ -12,7 +12,6 @@ const GoogleAuth = () => {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(credentialResponse),
-            credentials: "include"
         })
         .then(response => response.json())
         .then((data) => {
@@ -20,7 +19,7 @@ const GoogleAuth = () => {
           localStorage.setItem("User", data.user);
           localStorage.setItem("isLoggedIn", true);
           setTimeout(() => window.location.href = "/", 2000);
-        }).catch(toast.error("Error Logging in"))
+        }).catch(() => toast.error("Error Logging in"))
        }}
        onError={() => {
          toast.error("Login Failed");

@@ -1,8 +1,6 @@
 from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
 from flask_mongoengine import MongoEngine
-import jwt
-import datetime
 import os
 from google.oauth2 import id_token
 from google.auth.transport import requests
@@ -22,7 +20,7 @@ app.config['MONGODB_SETTINGS'] = {
 }
 db = MongoEngine(app)
 
-CORS(app, supports_credentials=True, origins="http://localhost:3000")
+CORS(app, origins=["*"])
 
 class User(db.Document):
     email = db.StringField(required=True, unique=True)
@@ -55,9 +53,7 @@ def google_auth():
         if not user:
             user = User(email=email, name=f"{given_name} {family_name}", authSource="google").save()
 
-        token = jwt.encode({'userId': str(user.id), 'email': user.email, 'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)}, os.getenv("JWT_SECRET"), algorithm="HS256")
         response = make_response(jsonify({"message": "Authentication successful", "user": user.to_json()}), 200)
-        response.set_cookie("token", token, httponly=True, secure=False, max_age=86400)
         return response
     except Exception as e:
         return jsonify({"error": "Authentication failed", "details": str(e)}), 400
@@ -75,9 +71,7 @@ def self_auth_login():
             return jsonify({"error": "No user found"}), 400
 
         if user.password == password:
-            token = jwt.encode({'userId': str(user.id), 'email': user.email, 'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)}, os.getenv("JWT_SECRET"), algorithm="HS256")
             response = make_response(jsonify({"message": "Authentication successful", "user": user.to_json()}), 200)
-            response.set_cookie("token", token, httponly=True, secure=False, max_age=86400)
             return response
         else:
             return jsonify({"error":"wrong password"}), 400
@@ -92,69 +86,38 @@ def self_auth_signin():
         name = data.get("name")
         password = data.get("password")
         user = User(email=email, name=name, password=password, authSource="self").save()
-
-        token = jwt.encode({'userId': str(user.id), 'email': user.email, 'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)}, os.getenv("JWT_SECRET"), algorithm="HS256")
         response = make_response(jsonify({"message": "Authentication successful", "user": user.to_json()}), 200)
-        response.set_cookie("token", token, httponly=True, secure=False, max_age=86400)
         return response
     except Exception as e:
         return jsonify({"error": "Authentication failed", "details": str(e)}), 400
 
-@app.route('/logout', methods=['POST'])
-def logout():
-    response = make_response(jsonify({"message": "Logged out"}))
-    response.delete_cookie("token")
-    return response
-
-@app.route("/validate", methods=["GET"])
-def validate():
-    token = request.cookies.get('token')
-
-    if not token:
-        return jsonify({"valid": False, "error": "Unauthorized"}), 401
-
-    try:
-        decoded = jwt.decode(token, os.getenv("JWT_SECRET"), algorithms=["HS256"])
-        return jsonify({"valid":True, "user": decoded})
-    except jwt.ExpiredSignatureError:
-        return jsonify({"valid": False, "error": "Token expired"}), 401
-    except jwt.InvalidTokenError:
-        return jsonify({"valid": False, "error": "Invalid token"}), 401
-    
-
-
-@app.route('/chats', methods=['GET'])
+@app.route('/chats', methods=['POST'])
 def get_chats():
-    token = request.cookies.get("token")
-    if not token:
+    data = request.json
+    email = data.get("email")
+    if not email:
         return jsonify({"error": "Unauthorized"}), 401
     try:
-        decoded = jwt.decode(token, os.getenv("JWT_SECRET"), algorithms=["HS256"])
-        data = Messages.objects(email=decoded["email"]).first()
-        return jsonify({"message": data.to_json() if data else None, "user": decoded})
-    except jwt.ExpiredSignatureError:
-        return jsonify({"error": "Token expired"}), 401
-    except jwt.InvalidTokenError:
-        return jsonify({"error": "Invalid token"}), 401
+        data = Messages.objects(email=email).first()
+        return jsonify({"message": data.to_json() if data else [].to_json()})
+    except:
+        return jsonify({"error": "Email Not Found"}), 401
     
 @app.route('/save-chat', methods=['POST'])
 def save_chat():
     try:
         data = request.json
-        email = data.get("email").strip().lower()
-        msg = data.get("messages")  # Expecting a list like [{'type': 'user', 'msg': 'hello'}]
+        email = data.get("email")
+        msg = data.get("messages")  
 
         if not email or not msg:
             return jsonify({"error": "Missing required fields"}), 400
 
-        # Find user chat history
         chat_entry = Messages.objects(email=email).first()
 
         if chat_entry:
-            # Convert list of dicts to list of ChatMessage objects
             chat_entry.messages = [ChatMessage(**m) for m in msg]
         else:
-            # Create new entry
             chat_entry = Messages(email=email, messages=[ChatMessage(**m) for m in msg])
 
         chat_entry.save()
@@ -167,16 +130,15 @@ def save_chat():
 def delete_chat():
     try:
         data = request.json
-        email = data.get("email").strip().lower()
+        email = data.get("email")
 
         if not email:
             return jsonify({"error": "Email is required"}), 400
-
-        # Find user chat history
+        
         chat_entry = Messages.objects(email=email).first()
 
         if chat_entry:
-            chat_entry.messages = []  # Clear messages
+            chat_entry.messages = []  
             chat_entry.save()
             return jsonify({"message": "Chat deleted successfully"}), 200
         else:
@@ -199,4 +161,4 @@ def predict():
 
 
 if __name__ == '__main__':
-    app.run(port=PORT, debug=True)
+    app.run(port=PORT, debug=True, host="0.0.0.0")

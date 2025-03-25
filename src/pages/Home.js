@@ -11,15 +11,6 @@ const Home = () => {
 
   useEffect(() => {
     setTimeout(() => setFadeIn(true), 200);
-    fetch(BASE+'/validate', { credentials: 'include' })
-    .then(response => response.json())
-    .then(data => {
-      if(!data.valid){
-        localStorage.removeItem("isLogedIn");
-        localStorage.removeItem("User");
-      }
-    })
-    .catch(() => toast.error("Unable to login"));
   }, []);
 
   const handleStartChat = () => {

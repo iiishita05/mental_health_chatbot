@@ -13,12 +13,15 @@ const Chatbot = () => {
 
   useEffect(()=>{
     fetch(BASE+"/chats", {
-      method: "GET",
-      credentials: "include",
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({email:JSON.parse(localStorage.getItem("User")).email})
     })
       .then((res) => res.json())
-      .then((data) => {
+      .then((data) => {        
         let message = JSON.parse(data.message);
+        message = message["messages"];
+        setMessages(message);
       })
       .catch((err) => console.error("Error:", err));
   },[])
@@ -69,7 +72,6 @@ const Chatbot = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include",
       body: JSON.stringify({ email:email, messages:messages }),
     }).then((res) => res.json())
     .then((res) => toast.success("Messages Saved!"))
@@ -87,7 +89,6 @@ const Chatbot = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include",
       body: JSON.stringify({ email:email }),
     }).then((res) => {
       toast.success("Messages Deleted!")

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import "./Home.css";
+import BASE from "../apis";
+import { toast } from "react-toastify";
 
 const Home = () => {
   const [fadeIn, setFadeIn] = useState(false);
@@ -9,6 +11,15 @@ const Home = () => {
 
   useEffect(() => {
     setTimeout(() => setFadeIn(true), 200);
+    fetch(BASE+'/validate', { credentials: 'include' })
+    .then(response => response.json())
+    .then(data => {
+      if(!data.valid){
+        localStorage.removeItem("isLogedIn");
+        localStorage.removeItem("User");
+      }
+    })
+    .catch(() => toast.error("Unable to login"));
   }, []);
 
   const handleStartChat = () => {

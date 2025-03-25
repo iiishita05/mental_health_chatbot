@@ -8,6 +8,7 @@ import Faqs from "./pages/Faqs";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import "./App.css";
+import { Bounce, ToastContainer } from "react-toastify";
 
 const App = () => {
   return (
@@ -21,6 +22,19 @@ const App = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
       </Routes>
+      <ToastContainer
+      position="bottom-right"
+      autoClose={3000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss={false}
+      draggable
+      pauseOnHover={false}
+      theme="dark"
+      transition={Bounce}
+      />
     </Router>
   );
 };

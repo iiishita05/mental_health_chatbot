@@ -1,9 +1,25 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
+import BASE from "./../apis"
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+
+  function Logout() {
+    localStorage.clear()
+    fetch(BASE+"/logout", {
+      method: "POST",
+      credentials: "include", 
+    })
+      .then(() => {
+        toast.success("Logged out");
+        setTimeout(() => window.location.href = "/" , 2000);
+      })
+      .catch((err) => toast.error("Error Logging out"));
+
+  }
 
   return (
     <>
@@ -31,12 +47,13 @@ const Navbar = () => {
             <Link to="/contact" onClick={() => setMenuOpen(false)}>Contact</Link>
           </li>
           <li>
-            <Link to="/login" onClick={() => setMenuOpen(false)}>Login</Link>
+            {localStorage.getItem("isLoggedIn")
+            ?<><p>Logged in as :</p> <p>{JSON.parse(localStorage.getItem("User")).name}</p><p onClick={Logout}>Logout</p></> 
+            : <Link to="/login" onClick={() => setMenuOpen(false)}>Login</Link>}
           </li>
         </ul>
       </div>
 
-      {/* Overlay Effect */}
       <div
         className={`overlay ${menuOpen ? "active" : ""}`}
         onClick={() => setMenuOpen(false)}

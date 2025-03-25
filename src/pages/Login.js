@@ -18,10 +18,10 @@ const Login = () => {
       body: JSON.stringify({email:email, password:password}),
     })
     .then(response => {
-      if (response.ok) {
-        return response.json();
+      if (!response.ok) {
+        throw new Error("Invalid usernmae/password")
       }
-      return Promise.reject(response);
+      return response.json();
     })
     .then((data) => {
       toast.success("Login successful");
@@ -40,7 +40,7 @@ const Login = () => {
     .then(response => response.json())
     .then((data) => {
       toast.success("Signed in")
-      localStorage.setItem("User", data.user);
+      localStorage.setItem("User", JSON.stringify(data.user));
       localStorage.setItem("isLoggedIn", true);
       setTimeout(() => window.location.href = "/", 2000);
     }).catch(() => toast.error("Error Logging in"))

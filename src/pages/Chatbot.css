@@ -1,6 +1,30 @@
 /* Import a modern font from Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap');
 
+.message {
+    padding: 10px;
+    border-radius: 10px;
+    margin: 5px 0;
+    max-width: 80%;
+    word-wrap: break-word;
+}
+.user {
+    background-color: #dcf8c6;
+    align-self: flex-end;
+}
+.bot {
+    background-color: #e0e0e0;
+    align-self: flex-start;
+}
+#typingIndicator {
+    font-size: 14px;
+    color: #666;
+    margin: 5px;
+    font-style: italic;
+    align-self: flex-start;
+    animation: fadeIn 1s cubic-bezier(0.55, 0.06, 0.68, 0.19) forwards;
+}
+
 /* Reset default styles and set the font */
 .chatbot-container {
     position: relative;
@@ -227,8 +251,7 @@
     color: #d0d0d0;
     margin-bottom: 2rem;
     line-height: 1.6;
-    animation: fadeIn 2s ease-in forwards;
-    animation-delay: 1s;
+    animation: fadeIn 1s ease-in forwards;
     opacity: 0;
 }
 
@@ -259,18 +282,18 @@
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.2);
     animation: slideUp 1s ease-out;
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 10px;
 }
 
 .chat-window p {
     font-size: 1.2rem;
-    color: #e0e0e0;
     text-align: left;
     background: rgba(255, 255, 255, 0.05);
-    padding: 10px 15px;
-    border-radius: 15px;
-    margin: 5px 0;
     display: inline-block;
-    max-width: 70%;
 }
 
 @keyframes slideUp {
@@ -315,7 +338,7 @@
     color: white;
     border: none;
     padding: 15px 30px;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 600;
     border-radius: 25px;
     cursor: pointer;

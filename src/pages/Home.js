@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import "./Home.css";
+import BASE from "../apis";
+import { toast } from "react-toastify";
 
 const Home = () => {
   const [fadeIn, setFadeIn] = useState(false);
